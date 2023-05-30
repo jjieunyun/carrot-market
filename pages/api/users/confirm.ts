@@ -14,10 +14,13 @@ async function handler(
     },
   });
   if (!foundToken) return res.status(404).end();
+  //req.session 다음에 아무 이름이나 올수있다.
   req.session.user = {
     id: foundToken.userId,
   };
   await req.session.save();
+
+  //🚨 token을 저장하면 삭제해줌 - 한번만 사용하기 위해
   await client.token.deleteMany({
     where: {
       userId: foundToken.userId,

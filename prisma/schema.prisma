@@ -39,7 +39,7 @@ model Product {
   id          Int        @id @default(autoincrement())
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
-  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade) //부모 테이블의 id를 참조 : 부모가 사라지면 자식도 삭제됨
   userId      Int
   image       String
   name        String

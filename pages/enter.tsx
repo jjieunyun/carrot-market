@@ -30,16 +30,15 @@ interface TokenForm {
 interface MutationResult {
   ok: boolean;
 }
-
+    // 🚨 useForm Hook을 두개 사용할수있다. 대신에 이름이 겹치니까 이름을 다르게 해줘야한다.
 const Enter: NextPage = () => {
-  const [enter, { loading, data, error }] =
-    useMutation<MutationResult>("/api/users/enter");
-  const [confirmToken, { loading: tokenLoading, data: tokenData }] =
-    useMutation<MutationResult>("/api/users/confirm");
+  const [enter, { loading, data, error }] = useMutation<MutationResult>("/api/users/enter");
+  const [confirmToken, { loading: tokenLoading, data: tokenData }] = useMutation<MutationResult>("/api/users/confirm");
   const { register, handleSubmit, reset } = useForm<EnterForm>();
-  const { register: tokenRegister, handleSubmit: tokenHandleSubmit } =
-    useForm<TokenForm>();
+  const { register: tokenRegister, handleSubmit: tokenHandleSubmit } = useForm<TokenForm>();
   const [method, setMethod] = useState<"email" | "phone">("email");
+
+
   const onEmailClick = () => {
     reset();
     setMethod("email");
@@ -66,6 +65,7 @@ const Enter: NextPage = () => {
     <div className="mt-16 px-4">
       <h3 className="text-3xl font-bold text-center">Enter to Carrot</h3>
       <div className="mt-12">
+        {/*데이터를 받아왔다면 화면에서 안보이게*/}
         {data?.ok ? (
           <form
             onSubmit={tokenHandleSubmit(onTokenValid)}

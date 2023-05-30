@@ -7,6 +7,7 @@ export interface ResponseType {
 
 type method = "GET" | "POST" | "DELETE";
 
+//🚨 isPrivate 추가 : 유저로그인이 필요한지 아닌지 value를 bool값으로 받음
 interface ConfigType {
   methods: method[];
   handler: (req: NextApiRequest, res: NextApiResponse) => void;
@@ -25,6 +26,8 @@ export default function withHandler({
     if (req.method && !methods.includes(req.method as any)) {
       return res.status(405).end();
     }
+
+    //🚨 #10.1에서 withHander를 보호하는 코드를 추가함
     if (isPrivate && !req.session.user) {
       return res.status(401).json({ ok: false, error: "Plz log in." });
     }
