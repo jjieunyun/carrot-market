@@ -33,10 +33,16 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({
     router.query.id ? `/api/products/${router.query.id}` : null
   );
   const [toggleFav] = useMutation(`/api/products/${router.query.id}/fav`);
+
+  //🚨optimistic UI update : Like를 클릭하면 API를 호출을 기다리지 않고, 바로 UI를 업데이트한다.
+  /**
+   * boundMutate : 화면에서 얻은 데이터만 변경하길 원할때 사용
+   * unboundMutate :  
+   */
   const onFavClick = () => {
     if (!data) return;
     boundMutate((prev) => prev && { ...prev, isLiked: !prev.isLiked }, false);
-    // mutate("/api/users/me", (prev: any) => ({ ok: !prev.ok }), false);
+    // mutate("/api/users/me", (prev: any) => ({ ok: !prev.ok }), false); -> 두번째인자를 false로 주면 revalidate를 하지않는다.
     toggleFav({});
   };
   if (router.isFallback) {
